@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# overal PPI pipeline. Follow AFNI and FSL's recommendation.
+# create PPI regressors. Follow AFNI and FSL's recommendation.
 
 # http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/PPICaveats
 # http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/PPIHowToRun
@@ -10,18 +10,23 @@
 WD='/home/despo/kaihwang/TRSETMS/'
 
 for s in 106; do
-	mkdir $WD/$s/PRE/PPI
+	
+	if [ ! -d "$WD/$s/PRE/PPI" ]; then
+		mkdir $WD/$s/PRE/PPI
+	fi
+	
 	cd $WD/$s/PRE/PPI
-	rm *.1D;
+	rm *.1D
+	rm EPI*
 	
 	# Steps from Gang Chen's webpage.
 	
 	#create necessary files first 
 	waver -dt 1 -GAM -inline 1@1 > ${WD}/${s}/PRE/PPI/GammaHR.1D
 	
-	# get FFA from each conditions relevant conditions
 	
-	for ROIs in FFA PPA; do
+	
+	for ROIs in FFA PPA; do #do two different ROIs.
 		for conditions in relevant_faces irrelevant_faces categorize_faces relevant_scenes irrelevant_scenes categorize_scenes; do
 			
 			# create this condition's stimulus timing
@@ -32,41 +37,83 @@ for s in 106; do
 		
 				#Step 1. Create seed time series: 3dmaskave -mask ROI -MyInput+orig > Seed.1D 
 				3dmaskave -quiet -mask ${WD}/All_Masks/${s}_${ROIs}.nii ${WD}/${s}/PRE/epi/EPI-$(printf %02d $run).nii > ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}.1D
-				1dtranspose ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_t.1D
+				1dtranspose ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_t.1D
 				
 				#Step 2. Detrend seed TS: 3dDetrend -polort ? -prefix SeedR Seed.1D; 
-				3dDetrend -polort 2 -prefix ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_dt.1D ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_t.1D
-				1dtranspose ${WD}/${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_dt.1D ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_dt_t.1D
+				3dDetrend -polort 2 -prefix ${WD}/${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}/${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_t.1D
+				1dtranspose ${WD}/${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_dt_t.1D
 				
 				#Step 3. Run decovolution on the time-series. 			
-				3dTfitter -RHS ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/PRE/PPI/GammaHR.1D ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroTS.1D 0123 0
+				3dTfitter -RHS ${WD}${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/PRE/PPI/GammaHR.1D ${WD}${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 0123 0
 				
-				#Step 4. extract stimulus timing. create gPPI psycho-phys-regressor
+				#Step 4. extract stimulus timing. create gPPI psycho-phys-regressor, create stimulus timing regressors.
 				sed -n "${run} p" ${WD}/${s}/PRE/PPI/${conditions}_allruns.1D > ${WD}/${s}/PRE/PPI/tmp.1D
 				1dtranspose ${WD}/${s}/PRE/PPI/tmp.1D ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D
-				1deval -a ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
-				waver -GAM -peak 1 -TR 1  -input ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/PRE/PPI/gPPI_${ROIs}_TS_run${run}_${conditions}.1D
+				waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/PRE/PPI/stim_run${run}_${conditions}_gam.1D
+				1deval -a ${WD}${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
+				waver -GAM -peak 10 -TR 1  -input ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/PRE/PPI/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
+			
+			
+			
 			done
 		done 
 	done
 	
-		
+	#delete ones that don't make sense
+	rm gPPI*FFA*_relevant*scenes*
+	rm gPPI*PPA*_relevant*faces*
+	rm gPPI*FFA*_irrelevant*scenes*
+	rm gPPI*PPA*_irrelevant*faces*
 	
 	
+	#Step 5. Concat regressors
+	cat $(ls gPPI*_irrelevant* | sort -V) > ${WD}/${s}/PRE/PPI/Reg_irrelevant.1D
+	cat $(ls gPPI*_relevant* | sort -V) > ${WD}/${s}/PRE/PPI/Reg_relevant.1D
 	
+	# to get imaging the runs
+	Included_Runs=$(ls gPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}')
+	for run in $(ls gPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}'); do
+		ln -s ${WD}/${s}/PRE/epi/EPI-$(printf %02d $run).nii ${WD}/${s}/PRE/PPI/EPI-$(printf %02d $run).nii
+		ln -s ${WD}/${s}/PRE/epi/EPI-$(printf %02d $run)-motpar.1D ${WD}/${s}/PRE/PPI/EPI-$(printf %02d $run)-motpar.1D
+	done
 	
+	#create concatenation file
+	echo 1D: $(ls gPPI*_irrelevant* | grep -no 'gPPI' | grep -Eo '[0-9]{1,2}' | awk '{ print ($1-1)*114 }') > ${WD}/${s}/PRE/PPI/concat.1D
 	
-	#Step 4. Obtain task regressor for gPPI, not task-interaction. Interaction will be modeled at the group level.
-	# First create a 1D (one column) file, AvsBcoding.1D,  with 0's (at those TR's where neither condition A nor B occurred), 1's (at those TR's where condition A occurred), and -1's (at those TR's where condition B occurred). If you only consider one condition A, code condition with 1's and the baseline time point with -1's.
-	# 1deval -a Seed_Neur.1D\' -b AvsBcoding.1D -expr 'a*b' > Inter_neu.1D
+	#create concatenate NII file and motion regressors
+	3dTcat -prefix ${WD}/${s}/PRE/PPI/EPI-input $(ls *nii | sort -V)
+	cat $(ls EPI*motpar.1D | sort -V) > ${WD}/${s}/PRE/PPI/Reg_motion.1D
+	
+	#Step 6. regression analysis
+	
+	3dDeconvolve -input $(ls *nii | sort -V) \
+	-automask \
+	-polort A \
+	-num_stimts 8 \
+	-stim_file 1 ${WD}/${s}/PRE/PPI/Reg_irrelevant.1D -stim_label 1 irrelevant \
+	-stim_file 2 ${WD}/${s}/PRE/PPI/Reg_relevant.1D -stim_label 2 relevant \
+	-stim_file 3 ${WD}/${s}/PRE/PPI/Reg_motion.1D[0] -stim_label 3 motpar1 -stim_base 3 \
+	-stim_file 4 ${WD}/${s}/PRE/PPI/Reg_motion.1D[1] -stim_label 4 motpar2 -stim_base 4 \
+	-stim_file 5 ${WD}/${s}/PRE/PPI/Reg_motion.1D[2] -stim_label 5 motpar3 -stim_base 5 \
+	-stim_file 6 ${WD}/${s}/PRE/PPI/Reg_motion.1D[3] -stim_label 6 motpar4 -stim_base 6 \
+	-stim_file 7 ${WD}/${s}/PRE/PPI/Reg_motion.1D[4] -stim_label 7 motpar5 -stim_base 7 \
+	-stim_file 8 ${WD}/${s}/PRE/PPI/Reg_motion.1D[5] -stim_label 8 motpar6 -stim_base 8 \
+	-gltsym 'SYM: +1*irrelevant' -glt_label 1 irrelevant \
+	-gltsym 'SYM: +1*relevant' -glt_label 2 relevant \
+	-gltsym 'SYM: +1*irrelevant -1*relevant' -glt_label 3 irrelevant-relevant \
+	-fout \
+	-rout \
+	-tout \
+	-bucket PPI_stats \
+	-x1D design_mat \
+	-x1D_stop  
+	
+	3dREMLfit -matrix design_mat.xmat.1D \
+	-input EPI-input+orig \
+	-automask \
+	-fout -tout -rout -Rbuck PPI_stats_REML -verb
+	 
 
-	# The interaction is created as
-	# waver -GAM -peak 1 -TR ?  -input Inter_neu.1D -numout #TRs > Inter_ts.1D
-	
-	#Step 5. Concatenate the regressors if there are multiple runs
-	# Run cat separately on Seed_ts.1D (final output from step(2)) and Inter_ts.1D (final output from step(4)), and use the 2 concatenated 1D files for the next step.
-	
-	#Step 6. Regressopm. use 3dDeconvolve and REMLfit..?
 	
 	#Step 7. Group analysis.
 	# Gang Chen: My limited experience showed that running group analysis with individual subject beta and the corresponding t-test with 3dttest/3dttest++/3dMEMA is more favorable than the following alternative approach with correlation coefficients. So in case you want to go with correlation coefficient, here are the steps:
