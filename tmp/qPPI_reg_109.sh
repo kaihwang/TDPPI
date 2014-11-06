@@ -9,7 +9,7 @@
 
 WD='/home/despo/kaihwang/TRSETMS/'
 
-for s in 106; do
+for s in 109; do
 
 	#normalize EPI time-series
 	
@@ -17,17 +17,17 @@ for s in 106; do
 	for run in $(seq 1 20); do
 		if [ ! -e "$WD/$s/PRE/epi/EPI-$(printf %02d $run)-scaled.nii" ]; then
 			
-			3dTstat -prefix mean_r{$run}.nii.gz $WD/$s/PRE/epi/EPI-$(printf %02d $run).nii
-			3dAutomask -prefix mask.nii.gz mean_r{$run}.nii.gz
+			3dTstat -prefix mean_r${run}.nii.gz $WD/$s/PRE/epi/EPI-$(printf %02d $run).nii
+			3dAutomask -prefix mask.nii.gz mean_r${run}.nii.gz
 			3dcalc -a $WD/$s/PRE/epi/EPI-$(printf %02d $run).nii \
                -b mean_r${run}.nii.gz \
                -c mask.nii.gz \
-	       	   -expr "(a/b * 1000)*c" \
+	       	   -expr '(a/b * 1000)*c' \
                -prefix $WD/$s/PRE/epi/EPI-$(printf %02d $run)-scaled.nii
 		rm mask.nii.gz
 		rm mean_r${run}.nii.gz
 		fi
-	end
+	done
 	
 	if [ ! -d "$WD/$s/PRE/PPI" ]; then
 		mkdir $WD/$s/PRE/PPI
@@ -71,7 +71,7 @@ for s in 106; do
 				1dtranspose ${WD}/${s}/PRE/PPI/tmp.1D ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D
 				waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/PRE/PPI/stim_run${run}_${conditions}_gam.1D
 				1deval -a ${WD}${s}/PRE/PPI/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/PRE/PPI/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
-				waver -GAM -peak 1 -TR 1  -input ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/PRE/PPI/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
+				waver -GAM -peak 10 -TR 1  -input ${WD}${s}/PRE/PPI/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/PRE/PPI/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
 			
 			done
 		done 
@@ -180,8 +180,8 @@ for s in 106; do
 	-stim_file 2 ${WD}/${s}/PRE/PPI/Reg_relevant.1D -stim_label 2 relevant \
 	-stim_file 3 ${WD}/${s}/PRE/PPI/stim_irrelevant.1D -stim_label 3 stimtime_irrelevant \
 	-stim_file 4 ${WD}/${s}/PRE/PPI/stim_relevant.1D -stim_label 4 stimtime_relevant \
-	-stim_file 5 ${WD}/${s}/PRE/PPI/FFA_ts.1D -stim_label 5 FFA_TS -stim_base 5 \
-	-stim_file 6 ${WD}/${s}/PRE/PPI/PPA_ts.1D -stim_label 6 PPA_TS -stim_base 6 \
+	-stim_file 5 ${WD}/${s}/PRE/PPI/FFA_ts.1D -stim_label 5 FFA_TS  \
+	-stim_file 6 ${WD}/${s}/PRE/PPI/PPA_ts.1D -stim_label 6 PPA_TS  \
 	-stim_file 7 ${WD}/${s}/PRE/PPI/Reg_motion.1D[0] -stim_label 7 motpar1 -stim_base 7 \
 	-stim_file 8 ${WD}/${s}/PRE/PPI/Reg_motion.1D[1] -stim_label 8 motpar2 -stim_base 8 \
 	-stim_file 9 ${WD}/${s}/PRE/PPI/Reg_motion.1D[2] -stim_label 9 motpar3 -stim_base 9 \
@@ -214,8 +214,8 @@ for s in 106; do
 	-num_stimts 10 \
 	-stim_file 1 ${WD}/${s}/PRE/PPI/Reg_irrelevant.1D -stim_label 1 irrelevant \
 	-stim_file 2 ${WD}/${s}/PRE/PPI/Reg_relevant.1D -stim_label 2 relevant \
-	-stim_file 3 ${WD}/${s}/PRE/PPI/FFA_ts.1D -stim_label 3 FFA_TS -stim_base 3 \
-	-stim_file 4 ${WD}/${s}/PRE/PPI/PPA_ts.1D -stim_label 4 PPA_TS -stim_base 4 \
+	-stim_file 3 ${WD}/${s}/PRE/PPI/FFA_ts.1D -stim_label 3 FFA_TS \
+	-stim_file 4 ${WD}/${s}/PRE/PPI/PPA_ts.1D -stim_label 4 PPA_TS \
 	-stim_file 5 ${WD}/${s}/PRE/PPI/Reg_motion.1D[0] -stim_label 5 motpar1 -stim_base 5 \
 	-stim_file 6 ${WD}/${s}/PRE/PPI/Reg_motion.1D[1] -stim_label 6 motpar2 -stim_base 6 \
 	-stim_file 7 ${WD}/${s}/PRE/PPI/Reg_motion.1D[2] -stim_label 7 motpar3 -stim_base 7 \
@@ -236,4 +236,6 @@ for s in 106; do
 	-input EPI-input+orig \
 	-automask \
 	-fout -tout -rout -Rbuck Reduced_model_PPI_stats_REML -verb
+	
+	
 done
