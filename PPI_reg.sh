@@ -12,7 +12,6 @@ WD='/home/despo/kaihwang/TRSETMS/'
 for s in 106; do
 
 	#normalize EPI time-series
-	
 	cd $WD/$s/PRE/epi
 	for run in $(seq 1 20); do
 		if [ ! -e "$WD/$s/PRE/epi/EPI-$(printf %02d $run)-scaled.nii" ]; then
