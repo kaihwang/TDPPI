@@ -4,7 +4,7 @@
 
 WD='/home/despoB/kaihwang/TRSE'
 Taraz_Raw='/home/despoB/kaihwang/TRSETMS'
-Courtney_Raw='/home/despo/reach/Aging_Rehab_Study/Analysis/reach_mri'
+reach_Raw='/home/despo/reach/Aging_Rehab_Study/Analysis/reach_mri'
 
 
 ## organize Taraz's 
@@ -81,5 +81,7 @@ done
 
 
 
-## orgnize reach 
-#subjects: 
+
+
+
+
