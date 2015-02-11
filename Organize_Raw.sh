@@ -7,9 +7,9 @@ Taraz_Raw='/home/despoB/kaihwang/TRSETMS'
 Courtney_Raw='/home/despo/reach/Aging_Rehab_Study/Analysis/reach_mri'
 
 
-# organize Taraz's 
-#107 108 109 110 111 112 113 114 115 116 117 118
-for s in 106 ; do
+## organize Taraz's 
+#subjects: 106 107 108 109 110 111 112 113 114 115 116 117 118
+for s in 106 107 108 109 110 111 112 113 114 115 116 117 118 ; do
 
 	if [ ! -d "${WD}/${s}" ]; then
 
@@ -52,14 +52,34 @@ for s in 106 ; do
 	cd ${WD}/${s}/Raw
 
 	i="1"
-	for d in $(ls -d *TRSE* | sort -V); do
-		mv ${d} run${i}
-		i=$[$i+1]
+	for run_dir in $(ls -d *TRSE* | sort -V); do
+		
+		if [ ! -d ${WD}/${s}/Raw/run${i} ]; then
+			mv ${run_dir} run${i}
+			i=$[$i+1]
+		fi
 	done
 
+	for run_dir in $(ls -d run* | sort -V); do
 
+		if [ ! -d ${WD}/${s}/${run_dir} ]; then
+			mkdir ${WD}/${s}/${run_dir}
+		fi
 
+		if [ ! -e ${WD}/${s}/${run_dir}/${run_dir}_raw.nii.gz ]; then
+			cd ${WD}/${s}/${run_dir}/
+			dcm2nii -d N -e N -f N -i N -n Y -o . ${WD}/${s}/Raw/${run_dir}/
+			raw_nii=$(ls *.nii.gz)
+			3dcopy $raw_nii ${run_dir}_raw.nii.gz
+			rm $raw_nii
+
+		fi
+	done
+
+	rm -rf ${WD}/${s}/Raw
 done
 
 
 
+## orgnize reach 
+#subjects: 
