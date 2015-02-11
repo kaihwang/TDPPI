@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# script to organize TRSE dataset raw dicoms. Combining data from Taraz and Courtney
+# script to organize TRSE dataset raw dicoms. Combining data from tms and Courtney
 
 WD='/home/despoB/kaihwang/TRSE'
-Taraz_Raw='/home/despoB/kaihwang/TRSETMS'
+tms_Raw='/home/despoB/kaihwang/TRSETMS'
 reach_Raw='/home/despo/reach/Aging_Rehab_Study/Analysis/reach_mri'
 
 
-## organize Taraz's 
+## organize tms's 
 #subjects: 106 107 108 109 110 111 112 113 114 115 116 117 118
 for s in 106 107 108 109 110 111 112 113 114 115 116 117 118 ; do
 
@@ -28,7 +28,7 @@ for s in 106 107 108 109 110 111 112 113 114 115 116 117 118 ; do
 
 	if [ ! -e "${WD}/${s}/MPRAGE/mprage.nii.gz" ]; then
 
-		3dcopy ${Taraz_Raw}/${s}/PRE/anatomical/anat.nii ${WD}/${s}/MPRAGE/mprage.nii.gz
+		3dcopy ${tms_Raw}/${s}/PRE/anatomical/anat.nii ${WD}/${s}/MPRAGE/mprage.nii.gz
 
 	fi
 
@@ -38,12 +38,12 @@ for s in 106 107 108 109 110 111 112 113 114 115 116 117 118 ; do
 	if 	[ ! -d "${WD}/${s}/Raw" ]; then
 
 		mkdir ${WD}/${s}/Raw
-		#ln -s ${Taraz_Raw}/${s}/PRE/*.tgz ${WD}/${s}/Raw/Raw.tgz
+		#ln -s ${tms_Raw}/${s}/PRE/*.tgz ${WD}/${s}/Raw/Raw.tgz
 
 	fi	
 
 	if [ ! -e ${WD}/${s}/Raw/Raw.tgz ]; then
-		ln -s ${Taraz_Raw}/${s}/PRE/*.tgz ${WD}/${s}/Raw/Raw.tgz
+		ln -s ${tms_Raw}/${s}/PRE/*.tgz ${WD}/${s}/Raw/Raw.tgz
 		tar xf ${WD}/${s}/Raw/Raw.tgz -C ${WD}/${s}/Raw
 		mv ${WD}/${s}/Raw/Despo_Lab*/* ${WD}/${s}/Raw
 		rm -rf ${WD}/${s}/Raw/Despo_Lab*

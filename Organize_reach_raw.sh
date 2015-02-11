@@ -54,7 +54,7 @@ for s in 1401 1402 1403 1404 1405 1406 1407 1408 1409 1411 1412 1413 1414 1415 1
 			mkdir ${WD}/${s}/${run_dir}
 		fi
 	
-		if [ ! -e ${WD}/${s}/${run_dir}/${run_dir}_raw.nii.gz ]; then
+		if [ ! -e "${WD}/${s}/${run_dir}/${run_dir}_raw.nii.gz" ]; then
 			cd ${WD}/${s}/${run_dir}/
 			dcm2nii -d N -e N -f N -i N -n Y -o . ${WD}/${s}/Raw/${run_dir}/
 			raw_nii=$(ls *.nii.gz)
