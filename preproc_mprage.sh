@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#run preprocessMprage on subjects
+#run preprocessMprage on subjects. for TRSE
 
 WD='/home/despoB/kaihwang/TRSE'
 
