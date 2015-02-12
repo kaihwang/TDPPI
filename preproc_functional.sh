@@ -8,7 +8,10 @@ WD='/home/despoB/kaihwang/TRSE'
 
 for s in 106; do
 
-	cd ${WD}/${s}/run1/
+	mkdir /tmp/kh_${s}_run1
+
+	cp ${WD}/${s}/run1/run1_raw.nii.gz /tmp/kh_${s}_run1/
+	cd /tmp/kh_${s}_run1
 
 	preprocessFunctional \
 	-cleanup \
@@ -25,5 +28,12 @@ for s in 106; do
 	-slice_acquisition interleaved \
 	-warpcoef ${WD}/${s}/MPRAGE/mprage_warpcoef.nii.gz \
 	-4d run1_raw.nii.gz
+
+	mv nswdkmt_run1_raw_6.nii.gz ${WD}/${s}/run1/
+	mv motion_info ${WD}/${s}/run1/
+	mv motion.par ${WD}/${s}/run1/motion.1D
+
+	cd ${WD}/${s}/
+	rm -rf /tmp/kh_${s}_run1/
 
 done
