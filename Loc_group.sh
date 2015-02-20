@@ -45,5 +45,5 @@ WD='/home/despoB/kaihwang/TRSE'
 1429 ${WD}/1429/Localizer_stats_REML+tlrc[18] ${WD}/1429/Localizer_stats_REML+tlrc[19] \
 1430 ${WD}/1430/Localizer_stats_REML+tlrc[18] ${WD}/1430/Localizer_stats_REML+tlrc[19] \
 1431 ${WD}/1431/Localizer_stats_REML+tlrc[18] ${WD}/1431/Localizer_stats_REML+tlrc[19] \
--mask /usr/local/fsl-5.0.6/data/standard/MNI152_T1_2mm_brain_mask.nii.gz \
+-mask /home/despoB/kaihwang/standard/mni_icbm152_nlin_asym_09c/mni_icbm152_t1_tal_nlin_asym_09c_face_mask_2mm.nii \
 -max_zeros 0.1
