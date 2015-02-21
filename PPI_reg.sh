@@ -29,25 +29,28 @@ for s in 106; do
 			
 			
 			for run in $(grep -n 0 ${SCRIPTS}/${s}_${conditions}.txt | cut -f1 -d:); do #extract runs with this condition.
-		
-				#Step 1. Create seed time series: 3dmaskave -mask ROI -MyInput+orig > Seed.1D 
-				3dmaskave -quiet -mask ${WD}/Group/Group_${ROIs}_mask.nii.gz ${WD}/${s}/run$(printf %d $run)/nswdkmt_run$(printf %d $run)_raw_6.nii.gz > ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D
-				1dtranspose ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
 				
-				#Step 2. Detrend seed TS: 3dDetrend -polort ? -prefix SeedR Seed.1D; 
-				3dDetrend -polort 2 -prefix ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
-				1dtranspose ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D
+				if [ ! -e ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then
+
+					#Step 1. Create seed time series: 3dmaskave -mask ROI -MyInput+orig > Seed.1D 
+					3dmaskave -quiet -mask ${WD}/Group/Group_${ROIs}_mask.nii.gz ${WD}/${s}/run$(printf %d $run)/nswdkmt_run$(printf %d $run)_raw_6.nii.gz > ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D
+					1dtranspose ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
+					
+					#Step 2. Detrend seed TS: 3dDetrend -polort ? -prefix SeedR Seed.1D; 
+					3dDetrend -polort 2 -prefix ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
+					1dtranspose ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D
+					
+					#Step 3. Run decovolution on the time-series. 			
+					3dTfitter -RHS ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/GammaHR.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 0123 0
+					
+					#Step 4. extract stimulus timing. create gPPI psycho-phys-regressor, create stimulus timing regressors.
+					#sed -n "${run} p" ${WD}/${s}/${conditions}_allruns.1D > ${WD}/${s}/tmp.1D
+					#1dtranspose ${WD}/${s}/tmp.1D ${WD}/${s}/stim_${conditions}_run${run}.1D
+					#waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_gam.1D
+					1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
+					waver -GAM -peak 100 -TR 1  -input ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
 				
-				#Step 3. Run decovolution on the time-series. 			
-				3dTfitter -RHS ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/GammaHR.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 0123 0
-				
-				#Step 4. extract stimulus timing. create gPPI psycho-phys-regressor, create stimulus timing regressors.
-				#sed -n "${run} p" ${WD}/${s}/${conditions}_allruns.1D > ${WD}/${s}/tmp.1D
-				#1dtranspose ${WD}/${s}/tmp.1D ${WD}/${s}/stim_${conditions}_run${run}.1D
-				#waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_gam.1D
-				1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
-				waver -GAM -peak 10 -TR 1  -input ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
-			
+				fi 
 			done
 		done 
 	done
@@ -71,23 +74,23 @@ for s in 106; do
 	# to get imaging the runs
 	
 	Included_Runs=$(ls gPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}')
-	for run in $(ls gPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}'); do
-		ln -s ${WD}/${s}/EPI-$(printf %02d $run)-scaled.nii ${WD}/${s}/EPI-$(printf %02d $run).nii
-		ln -s ${WD}/${s}/EPI-$(printf %02d $run)-motpar.1D ${WD}/${s}/EPI-$(printf %02d $run)-motpar.1D
+	for run in $Included_Runs; do
+		ln -s ${WD}/${s}/run${run}/nswdkmt_run${run}_raw_6.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz
+		ln -s ${WD}/${s}/run${run}/motion.1D ${WD}/${s}/run${run}-motpar.1D
 	done
 	
 	#create concatenation file
-	echo 1D: $(ls gPPI*_irrelevant* | grep -no 'gPPI' | grep -Eo '[0-9]{1,2}' | awk '{ print ($1-1)*114 }') > ${WD}/${s}/concat.1D
+	#echo 1D: $(ls gPPI*_irrelevant* | grep -no 'gPPI' | grep -Eo '[0-9]{1,2}' | awk '{ print ($1-1)*114 }') > ${WD}/${s}/concat.1D
 	
 	#create concatenate NII file and motion regressors
-	3dTcat -prefix ${WD}/${s}/EPI-input $(ls *nii | sort -V)
-	cat $(ls EPI*motpar.1D | sort -V) > ${WD}/${s}/Reg_motion.1D
+	#3dTcat -prefix ${WD}/${s}/EPI-input $(ls *nii | sort -V)
+	cat $(ls run*motpar.1D | sort -V) > ${WD}/${s}/Reg_motion.1D
 	
 	#Step 6. regression analysis
 	
 	
 	# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
-	3dDeconvolve -input $(ls *nii | sort -V) \
+	3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
 	-automask \
 	-polort A \
 	-num_stimts 12 \
@@ -116,10 +119,8 @@ for s in 106; do
 	-x1D Full_model_design_mat \
 	-x1D_stop  
 	
-	3dREMLfit -matrix Full_model_design_mat.xmat.1D \
-	-input EPI-input+orig \
-	-automask \
-	-fout -tout -rout -Rbuck Full_model_PPI_stats_REML -verb
+	sed "s/-rout/-rout -automask/g" < PPI_Full_model_stats.REML_cmd> 3dREML_PPI_Full_model_stats_cmd
+	. 3dREML_PPI_Full_model_stats_cmd
 	
 	
 

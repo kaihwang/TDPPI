@@ -2,25 +2,43 @@
 
 #for SGE jobs
 
-mkdir tmp;
+#mkdir tmp;
 WD='/home/despoB/kaihwang/TRSE'
-SCRIPT='/home/despoB/kaihwang/bin/TDPPI'
+SCRIPTS='/home/despoB/kaihwang/bin/TDPPI'
 
 cd ${WD}
 
-for Subject in $(ls -d *); do
+# for Subject in $(ls -d *); do
 	
-	#if [ ! -e "${WD}/${Subject}/MPRAGE/${Subject}_MNI_final.nii.gz" ]; then
-	#	sed "s/s in 107/s in ${Subject}/g" < ${SCRIPT}/preproc_mprage.sh > ${SCRIPT}/tmp/mprage_${Subject}.sh
-	#	qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/mprage_${Subject}.sh  #-l mem_free=5G
-	#fi	
+# 	#if [ ! -e "${WD}/${Subject}/MPRAGE/${Subject}_MNI_final.nii.gz" ]; then
+# 	#	sed "s/s in 107/s in ${Subject}/g" < ${SCRIPT}/preproc_mprage.sh > ${SCRIPT}/tmp/mprage_${Subject}.sh
+# 	#	qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/mprage_${Subject}.sh  #-l mem_free=5G
+# 	#fi	
 
-	for r in $(seq 1 1 20); do
+# 	for r in $(seq 1 1 20); do
 		
-		if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_run${r}_raw_6.nii.gz" ]; then
-			sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g " < ${SCRIPT}/preproc_functional.sh > ${SCRIPT}/tmp/functional_${Subject}_${r}.sh 
-			qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/functional_${Subject}_${r}.sh   #-l mem_free=5G
-		fi
-	done
+# 		if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_run${r}_raw_6.nii.gz" ]; then
+# 			sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g " < ${SCRIPT}/preproc_functional.sh > ${SCRIPT}/tmp/functional_${Subject}_${r}.sh 
+# 			qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/functional_${Subject}_${r}.sh   #-l mem_free=5G
+# 		fi
+# 	done
 
+# done
+
+
+# for Subject in $(ls -d 1*) ; do
+
+# 	if [ ! -e ${WD}/${Subject}/Localizer_stats.REML_cmd ]; then
+# 		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/loc_FFA_PPA.sh> ${SCRIPTS}/tmp/localize_FFA_PPA_${Subject}.sh
+# 		qsub -V -M kaihwang -m e -l mem_free=12G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/localize_FFA_PPA_${Subject}.sh
+# 	fi	
+# done
+
+
+for Subject in $(ls -d 1*) ; do
+
+	if [ ! -e ${WD}/${Subject}/3dREML_PPI_Full_model_stats_cmd ]; then
+		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/PPI_reg.sh> ${SCRIPTS}/tmp/PPI_reg_${Subject}.sh
+		qsub -V -M kaihwang -m e -l mem_free=5.7G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/PPI_reg_${Subject}.sh
+	fi	
 done
