@@ -31,9 +31,9 @@ for s in 106; do
 	done
 
 	# create regressors
-	cat $(ls ${WD}/${s}/*_face_*_gam.1D| sort -V) > ${WD}/${s}/Face_gam.1D
-	cat $(ls ${WD}/${s}/*_scene_*_gam.1D| sort -V) > ${WD}/${s}/Scene_gam.1D
-	cat $(ls run*/motion.1D | sort -V) > ${WD}/${s}/Motion_allruns.1D
+	cat $(ls ${WD}/${s}/*_face_*_gam.1D| sort -k4 -t_ -V) > ${WD}/${s}/Face_gam.1D
+	cat $(ls ${WD}/${s}/*_scene_*_gam.1D| sort -k4 -t_ -V) > ${WD}/${s}/Scene_gam.1D
+	cat $(ls ${WD}/${s}/run*/motion.1D | sort -V) > ${WD}/${s}/Motion_allruns.1D
 
 	3dDeconvolve -input $(ls run*/ns* | sort -V) \
 	-automask \
