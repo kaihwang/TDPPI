@@ -3,7 +3,7 @@
 
 # run group analysis
 cd /home/despoB/kaihwang/TRSE/Group
-WD='/home/despo/kaihwang/TRSE'
+WD='/home/despoB/kaihwang/TRSE'
 
 # gppi irre - rle
 3dMEMA -prefix Full_model_gPPI_irrelevant-relevant_groupANA \
