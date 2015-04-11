@@ -271,7 +271,7 @@ for s in 106; do
 	# #cat $(ls ${WD}/${s}/stim_run${run}_irrelevant_gam.1D)
 	# to get the runs
 	#Included_Runs=(1 2 3 5 6 8 9 11 12 14 15 16 17 18)
-	for run in 1 2 3 5 6 8 9 11 12 14 15 16 17 18; do
+	for run in 1 2 3 5 6 8 9 11 12 14 15 16 17  19; do
 		
 		if [ ! -e ${WD}/${s}/preproced-EPI-${run}.nii.gz ]; then
 			ln -s ${WD}/${s}/run${run}/nswdkmt_run${run}_raw_6.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz
