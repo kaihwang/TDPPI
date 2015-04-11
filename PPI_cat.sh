@@ -227,14 +227,45 @@ for s in 106; do
 	zeros.1D \
 	stim_run19_categorize_scene_gam.1D > stim_categorize_scene.1D
 
+	cat FFA_run1_TS_irrelevant_scene_dt_t.1D \
+	FFA_run2_TS_irrelevant_face_dt_t.1D \
+	FFA_run3_TS_categorize_face_dt_t.1D \
+	FFA_run5_TS_irrelevant_face_dt_t.1D \
+	FFA_run6_TS_categorize_face_dt_t.1D \
+	FFA_run8_TS_irrelevant_scene_dt_t.1D \
+	FFA_run9_TS_categorize_face_dt_t.1D \
+	FFA_run11_TS_irrelevant_scene_dt_t.1D \
+	FFA_run12_TS_irrelevant_face_dt_t.1D \
+	FFA_run14_TS_irrelevant_scene_dt_t.1D \
+	FFA_run15_TS_irrelevant_face_dt_t.1D \
+	FFA_run16_TS_categorize_face_dt_t.1D \
+	FFA_run17_TS_irrelevant_scene_dt_t.1D \
+	FFA_run18_TS_irrelevant_face_dt_t.1D \
+	FFA_run19_TS_categorize_face_dt_t.1D > FFA_ts.1D
+
+	cat PPA_run1_TS_relevant_face_dt_t.1D \
+	PPA_run2_TS_irrelevant_face_dt_t.1D \
+	PPA_run3_TS_categorize_face_dt_t.1D \
+	PPA_run5_TS_irrelevant_face_dt_t.1D \
+	PPA_run6_TS_categorize_scene_dt_t.1D \
+	PPA_run8_TS_relevant_face_dt_t.1D \
+	PPA_run9_TS_categorize_face_dt_t.1D \
+	PPA_run11_TS_irrelevant_scene_dt_t.1D \
+	PPA_run12_TS_irrelevant_face_dt_t.1D \
+	PPA_run14_TS_irrelevant_scene_dt_t.1D \
+	PPA_run15_TS_irrelevant_face_dt_t.1D \
+	PPA_run16_TS_categorize_face_dt_t.1D \
+	PPA_run17_TS_irrelevant_scene_dt_t.1D \
+	PPA_run18_TS_irrelevant_face_dt_t.1D \
+	PPA_run19_TS_categorize_face_dt_t.1D > PPA_ts.1D
 	# cat $(ls ${WD}/${s}/FSLgPPI*_irrelevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_irrelevant.1D
 	# cat $(ls ${WD}/${s}/FSLgPPI*_relevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_relevant.1D
 	# #cat $(ls ${WD}/${s}/gPPI*_irrelevant* | sort -V) > ${WD}/${s}/Reg_irrelevant.1D
 	# #cat $(ls ${WD}/${s}/gPPI*_relevant* | sort -V) > ${WD}/${s}/Reg_relevant.1D
 	# cat $(ls ${WD}/${s}/*_relevant_*_gam.1D | sort -V) > ${WD}/${s}/stim_relevant.1D
 	# cat $(ls ${WD}/${s}/*irrelevant_*_gam.1D | sort -V) > ${WD}/${s}/stim_irrelevant.1D
-	# cat $(ls ${WD}/${s}/FFA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/FFA_ts.1D
-	# cat $(ls ${WD}/${s}/PPA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/PPA_ts.1D
+	cat $(ls ${WD}/${s}/FFA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/FFA_ts.1D
+	cat $(ls ${WD}/${s}/PPA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/PPA_ts.1D
 	
 
 	# #cat $(ls ${WD}/${s}/stim_run${run}_irrelevant_gam.1D)
@@ -277,7 +308,7 @@ for s in 106; do
 		-stim_file 7 ${WD}/${s}/RegFSLgPPI_categorize_face.1D -stim_label 7 categorize_face \
 		-stim_file 8 ${WD}/${s}/RegFSLgPPI_categorize_scene.1D -stim_label 8 categorize_scene \
 		-stim_file 9 ${WD}/${s}/stim_categorize_face.1D -stim_label 9 stimtime_categorize_face \
-		-stim_file 10 ${WD}/${s}/stim_categorize_scene.1D -stim_label 10 stimtime_categorize_face \
+		-stim_file 10 ${WD}/${s}/stim_categorize_scene.1D -stim_label 10 stimtime_categorize_scene \
 		-stim_file 11 ${WD}/${s}/Reg_motion.1D[0] -stim_label 11 motpar1 -stim_base 11 \
 		-stim_file 12 ${WD}/${s}/Reg_motion.1D[1] -stim_label 12 motpar2 -stim_base 12 \
 		-stim_file 13 ${WD}/${s}/Reg_motion.1D[2] -stim_label 13 motpar3 -stim_base 13 \
