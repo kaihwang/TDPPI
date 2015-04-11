@@ -317,12 +317,12 @@ for s in 106; do
 		-stim_file 16 ${WD}/${s}/Reg_motion.1D[5] -stim_label 16 motpar6 -stim_base 16 \
 		-gltsym 'SYM: +1*irrelevant' -glt_label 1 gPPI_irrelevant \
 		-gltsym 'SYM: +1*relevant' -glt_label 2 gPPI_relevant \
-		-gltsym 'SYM: +1*irrelevant -*relevant' -glt_label 3 gPPI_irrelevant-relevant \
+		-gltsym 'SYM: +1*irrelevant -1*relevant' -glt_label 3 gPPI_irrelevant-relevant \
 		-gltsym 'SYM: +1*stimtime_irrelevant' -glt_label 4 stimtime_irrelevant \
 		-gltsym 'SYM: +1*stimtime_relevant' -glt_label 5 stimtime_relevant \
 		-gltsym 'SYM: +1*stimtime_irrelevant -1*stimtime_relevant' -glt_label 6 stimtime_irrelevant-stimtime_relevant \
-		-gltsym 'SYM: +1*irrelevant - 0.5*categorize_face -0.5*categorize_scene' -glt_label 7 gPPI_irrelevant-categorize \
-		-gltsym 'SYM: +1*relevant - 0.5*categorize_face -0.5*categorize_scene' -glt_label 8 gPPI_relevant-categorize \
+		-gltsym 'SYM: +1*irrelevant -0.5*categorize_face -0.5*categorize_scene' -glt_label 7 gPPI_irrelevant-categorize \
+		-gltsym 'SYM: +1*relevant -0.5*categorize_face -0.5*categorize_scene' -glt_label 8 gPPI_relevant-categorize \
 		-gltsym 'SYM: +1*stimtime_irrelevant -0.5*stimtime_categorize_face -0.5*stimtime_categorize_scene' -glt_label 9 stimtime_irrelevant-stimtime_categorize \
 		-gltsym 'SYM: +1*stimtime_relevant -0.5*stimtime_categorize_face -0.5*stimtime_categorize_scene' -glt_label 10 stimtime_relevant-stimtime_categorize \
 		-fout \
