@@ -37,8 +37,8 @@ cd ${WD}
 
 for Subject in $(ls -d 1*) ; do
 
-	if [ ! -e ${WD}/${Subject}/FSLgPPI_Full_model_stats_cmd ]; then
-		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/PPI_reg.sh> ${SCRIPTS}/tmp/PPI_reg_${Subject}.sh
-		qsub -V -M kaihwang -m e -l mem_free=5.7G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/PPI_reg_${Subject}.sh
+	if [ ! -e ${WD}/${Subject}/3dREML_FSLgPPI_task_v_cat_stats_cmd ]; then
+		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/PPI_cat.sh> ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
+		qsub -V -M kaihwang -m e -l mem_free=5.7G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
 	fi	
 done
