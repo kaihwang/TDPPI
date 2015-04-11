@@ -264,14 +264,14 @@ for s in 106; do
 	# #cat $(ls ${WD}/${s}/gPPI*_relevant* | sort -V) > ${WD}/${s}/Reg_relevant.1D
 	# cat $(ls ${WD}/${s}/*_relevant_*_gam.1D | sort -V) > ${WD}/${s}/stim_relevant.1D
 	# cat $(ls ${WD}/${s}/*irrelevant_*_gam.1D | sort -V) > ${WD}/${s}/stim_irrelevant.1D
-	cat $(ls ${WD}/${s}/FFA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/FFA_ts.1D
-	cat $(ls ${WD}/${s}/PPA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/PPA_ts.1D
+	#cat $(ls ${WD}/${s}/FFA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/FFA_ts.1D
+	#cat $(ls ${WD}/${s}/PPA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/PPA_ts.1D
 	
 
 	# #cat $(ls ${WD}/${s}/stim_run${run}_irrelevant_gam.1D)
 	# to get the runs
 	#Included_Runs=(1 2 3 5 6 8 9 11 12 14 15 16 17 18)
-	for run in 1 2 3 5 6 8 9 11 12 14 15 16 17  19; do
+	for run in 1 2 3 5 6 8 9 11 12 14 15 16 17 19; do
 		
 		if [ ! -e ${WD}/${s}/preproced-EPI-${run}.nii.gz ]; then
 			ln -s ${WD}/${s}/run${run}/nswdkmt_run${run}_raw_6.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz
