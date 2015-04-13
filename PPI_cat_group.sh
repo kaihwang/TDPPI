@@ -8,7 +8,7 @@ WD='/home/despoB/kaihwang/TRSE'
 # gppi irre - rle
 3dMEMA -prefix task_v_cat_FSLgPPI_irrelevant_groupANA \
 -cio \
--set irrelevant-relevant \
+-set irrelevant \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[42] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[43] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[42] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[43] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[42] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[43] \
@@ -54,7 +54,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix task_v_cat_FSLgPPI_relevant_groupANA \
 -cio \
--set irrelevant \
+-set relevant \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[46] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[47] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[46] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[47] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[46] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[47] \
@@ -99,7 +99,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix task_v_cat_FSLgPPI_irrelevant-relevant_groupANA \
 -cio \
--set relevant \
+-set irr-re \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[50] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[51] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[50] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[51] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[50] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[51] \
@@ -144,7 +144,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix task_v_cat_FSLgPPI_irrelevant-categorize_groupANA \
 -cio \
--set relevant \
+-set irrelevant-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[66] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[67] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[66] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[67] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[66] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[67] \
@@ -190,7 +190,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix task_v_cat_FSLgPPI_relevant-categorize_groupANA \
 -cio \
--set relevant \
+-set relevant-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[70] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[71] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[70] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[71] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[70] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[71] \
@@ -370,7 +370,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix fsltask_v_cat_stimtime_irrelevant-categorize_groupANA \
 -cio \
--set irrelevant-relevant \
+-set irrelevant-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[74] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[75] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[74] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[75] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[74] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[75] \
@@ -415,7 +415,7 @@ WD='/home/despoB/kaihwang/TRSE'
 
 3dMEMA -prefix fsltask_v_cat_stimtime_relevant-categorize_groupANA \
 -cio \
--set irrelevant-relevant \
+-set relevant-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[78] ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[79] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[78] ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[79] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[78] ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[79] \
