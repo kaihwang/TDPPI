@@ -72,7 +72,7 @@ for s in 106; do
 					
 					# step 2. convolve de-meaned regressor with HRF
 					if [ ! -e ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D ]; then
-						waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
+						waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}_dm.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
 					fi
 					
 					# step 3. create PPI interaction regressor with demeaned and detrend ROI ts
