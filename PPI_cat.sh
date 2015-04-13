@@ -292,7 +292,7 @@ for s in 106; do
 	
 
 	# regression FSL style
-	if [ ! -e 3dREML_FSLgPPI_task_v_cat_stats_cmd ]; then
+	if [ ! -e FSLgPPI_task_v_cat_stats_REML+tlrc.BRIK ]; then
 	
 		# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
 		3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
