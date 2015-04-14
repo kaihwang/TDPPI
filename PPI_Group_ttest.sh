@@ -8,7 +8,6 @@ WD='/home/despoB/kaihwang/TRSE'
 # gppi irre - rle
 3dttest++ -prefix ttest_FSLgPPI_irrelevant-relevant_v_cat \
 -setA irrelevant-cat \
--labelA irr-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
@@ -48,8 +47,8 @@ WD='/home/despoB/kaihwang/TRSE'
 1429 ${WD}/1429/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
 1430 ${WD}/1430/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
 1431 ${WD}/1431/FSLgPPI_task_v_cat_stats_REML+tlrc[74] \
+-labelA irr-cat \
 -setB rel-cat \
--labelB rel-cat \
 106 ${WD}/106/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
 107 ${WD}/107/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
 108 ${WD}/108/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
@@ -89,6 +88,7 @@ WD='/home/despoB/kaihwang/TRSE'
 1429 ${WD}/1429/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
 1430 ${WD}/1430/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
 1431 ${WD}/1431/FSLgPPI_task_v_cat_stats_REML+tlrc[78] \
+-labelB rel-cat \
 -paired \
 -mask /home/despoB/kaihwang/TRSE/Group/TRSE_overlap_mask.nii.gz
 
