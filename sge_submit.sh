@@ -3,27 +3,29 @@
 #for SGE jobs
 
 #mkdir tmp;
-WD='/home/despoB/kaihwang/TRSE'
 SCRIPTS='/home/despoB/kaihwang/bin/TDPPI'
 
-cd ${WD}
+for dataset in REACH; do
+	WD="/home/despoB/kaihwang/TRSE/TRSEPPI/${dataset}"
+	cd ${WD}
 
-# for Subject in $(ls -d *); do
-	
-# 	#if [ ! -e "${WD}/${Subject}/MPRAGE/${Subject}_MNI_final.nii.gz" ]; then
-# 	#	sed "s/s in 107/s in ${Subject}/g" < ${SCRIPT}/preproc_mprage.sh > ${SCRIPT}/tmp/mprage_${Subject}.sh
-# 	#	qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/mprage_${Subject}.sh  #-l mem_free=5G
-# 	#fi	
-
-# 	for r in $(seq 1 1 20); do
+	for Subject in $(ls -d *); do
 		
-# 		if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_run${r}_raw_6.nii.gz" ]; then
-# 			sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g " < ${SCRIPT}/preproc_functional.sh > ${SCRIPT}/tmp/functional_${Subject}_${r}.sh 
-# 			qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/functional_${Subject}_${r}.sh   #-l mem_free=5G
-# 		fi
-# 	done
+		#if [ ! -e "${WD}/${Subject}/MPRAGE/${Subject}_MNI_final.nii.gz" ]; then
+		#	sed "s/s in 107/s in ${Subject}/g" < ${SCRIPT}/preproc_mprage.sh > ${SCRIPT}/tmp/mprage_${Subject}.sh
+		#	qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ${SCRIPT}/tmp/mprage_${Subject}.sh  #-l mem_free=5G
+		#fi	
 
-# done
+		for r in $(seq 1 1 20); do
+			
+			#if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_run${r}_raw_6.nii.gz" ]; then
+				sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g; s/REACH/${dataset}/g " < ${SCRIPTS}/preproc_functional.sh > ~/$tmp/functional_${Subject}_${r}.sh 
+				qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ~/$tmp/functional_${Subject}_${r}.sh   #-l mem_free=5G
+			#fi
+		done
+
+	done
+done
 
 
 # for Subject in $(ls -d 1*) ; do
@@ -35,10 +37,10 @@ cd ${WD}
 # done
 
 
-for Subject in $(ls -d 1*) ; do
+# for Subject in $(ls -d 1*) ; do
 
-	if [ ! -e ${WD}/${Subject}/FSLgPPI_task_v_cat_stats_REML+tlrc.BRIK ]; then
-		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/PPI_cat.sh> ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
-		qsub -V -M kaihwang -m e -l mem_free=9G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
-	fi	
-done
+# 	if [ ! -e ${WD}/${Subject}/FSLgPPI_task_v_cat_stats_REML+tlrc.BRIK ]; then
+# 		sed "s/s in 106/s in ${Subject}/g" < ${SCRIPTS}/PPI_cat.sh> ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
+# 		qsub -V -M kaihwang -m e -l mem_free=9G -e ~/tmp -o ~/tmp ${SCRIPTS}/tmp/PPI_cat_${Subject}.sh
+# 	fi	
+# done

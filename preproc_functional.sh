@@ -2,7 +2,7 @@
 
 #run preprocessFunctional on subjects. For TRSE
 
-WD='/home/despoB/kaihwang/TRSE'
+WD='/home/despoB/kaihwang/TRSE/TRSEPPI/REACH'
 
 
 
@@ -14,6 +14,7 @@ for s in 106; do
 	cd /tmp/kh_${s}_run1
 
 	preprocessFunctional \
+	-startover \
 	-cleanup \
 	-despike \
 	-mprage_bet ${WD}/${s}/MPRAGE/mprage_bet.nii.gz \
