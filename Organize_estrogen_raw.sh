@@ -25,7 +25,7 @@ for s in 102 106 107 110 111 112 115 116 118 119 121 122 123 124 ; do
 	fi
 
 	if [ ! -e ${WD}/${s}/Raw/Raw.tgz ]; then
-		cp ${estrogen_Raw}/${s}*/*.tgz ${WD}/${s}/Raw/Raw.tgz
+		cp ${estrogen_raw}/${s}*/*.tgz ${WD}/${s}/Raw/Raw.tgz
 		tar xf ${WD}/${s}/Raw/Raw.tgz -C ${WD}/${s}/Raw
 		mv ${WD}/${s}/Raw/Despo_Lab*/* ${WD}/${s}/Raw
 		rm -rf ${WD}/${s}/Raw/Despo_Lab*
