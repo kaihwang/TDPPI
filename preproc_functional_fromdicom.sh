@@ -13,16 +13,15 @@ for s in 106; do
 	cp ${WD}/${s}/run1/*.dcm /tmp/kh_${s}_run1/
 	cd /tmp/kh_${s}_run1
 
-	dcm_files=($(ls *.dcm))
-	dcm_file=${dcm_files[0]} 
-	slice_order=$(echo "$dcm_file" | python ~/bin/TDPPI/get_slice_order.py)
+	#dcm_files=($(ls *.dcm))
+	#dcm_file=${dcm_files[0]} 
+	#slice_order=$(echo "$dcm_file" | python ~/bin/TDPPI/get_slice_order.py)
 
 	preprocessFunctional \
 	-startover \
 	-cleanup \
 	-despike \
 	-mprage_bet ${WD}/${s}/MPRAGE/mprage_bet.nii.gz \
-	-tr 1 \
 	-threshold 98_2 \
 	-rescaling_method 100_voxelmean \
 	-template_brain MNI_2mm \
@@ -30,7 +29,6 @@ for s in 106; do
 	-warp_interpolation spline \
 	-no_hp \
 	-smoothing_kernel 6 \
-	-slice_acquisition ${slice_order} \
 	-warpcoef ${WD}/${s}/MPRAGE/mprage_warpcoef.nii.gz \
 	-delete_dicom archive \
 	-dicom "*.dcm"
