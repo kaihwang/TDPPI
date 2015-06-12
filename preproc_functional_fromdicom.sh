@@ -36,7 +36,10 @@ for s in 106; do
 	mv nswdkmt_run1_raw_6.nii.gz ${WD}/${s}/run1/
 	mv motion_info ${WD}/${s}/run1/
 	mv motion.par ${WD}/${s}/run1/motion.1D
-
+	mv *.log  ${WD}/${s}/run1/
+	mv .detect_sliceorder ${WD}/${s}/run1/slice_order
+	mv .detect_tr ${WD}/${s}/run1/slice_order/TR
+	
 	cd ${WD}/${s}/
 	rm -rf /tmp/kh_${s}_run1/
 
