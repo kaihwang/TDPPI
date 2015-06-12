@@ -33,7 +33,7 @@ for s in 106; do
 	-delete_dicom archive \
 	-dicom "*.dcm"
 
-	mv nswdkmt_run1_raw_6.nii.gz ${WD}/${s}/run1/
+	mv nswdkmt_*.nii.gz ${WD}/${s}/run1/
 	mv motion_info ${WD}/${s}/run1/
 	mv motion.par ${WD}/${s}/run1/motion.1D
 	mv *.log  ${WD}/${s}/run1/
