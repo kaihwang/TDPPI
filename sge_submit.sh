@@ -5,7 +5,7 @@
 #mkdir tmp;
 SCRIPTS='/home/despoB/kaihwang/bin/TDPPI'
 
-for dataset in ESTROGEN RVR ENHANCE; do
+for dataset in RVR ENHANCE; do
 	WD="/home/despoB/kaihwang/TRSE/TRSEPPI/${dataset}"
 	cd ${WD}
 

@@ -9,7 +9,7 @@ enhance_raw='/home/despo/enhance/MRIdata_subjects/TRSE'
 
 ## organize tms's 
 #subjects: 106 107 108 109 110 111 112 113 114 115 116 117 118
-for s in 7601 7604 7611 7613 7614 7620 7621 ; do
+for s in 7616; do
 
 	if [ ! -d "${WD}/${s}" ]; then
 
