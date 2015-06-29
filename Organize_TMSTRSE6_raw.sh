@@ -9,7 +9,7 @@ tms_Raw='/home/despo/counterman/Data/TRSE_TMS'
 
 ## organize tms's 
 #subjects: 106 107 108 109 110 111 112 113 114 115 116 117 118
-for s in 620 623 627 628 629 630 631 632 633 634 635 636 637 638 639 ; do
+for s in 634 ; do
 
 	if [ ! -d "${WD}/${s}" ]; then
 
@@ -45,7 +45,7 @@ for s in 620 623 627 628 629 630 631 632 633 634 635 636 637 638 639 ; do
 		fi
 
 		if [ ! -e ${WD}/${s}/run${i}/run${i}_raw.nii.gz ]; then
-			3dcopy ${tms_Raw}/${s}/PRE/epi/ep2d_neuro_64_TR1000_TRSEblock_${i}.nii.gz ${WD}/${s}/run${i}/run${i}_raw.nii.gz 
+			cp ${tms_Raw}/${s}/PRE/epi/ep2d_neuro_64_TR1000_TRSEblock_${i}.nii.gz ${WD}/${s}/run${i}/run${i}_raw.nii.gz 
 		fi	
 
 		i=$[$i+1]

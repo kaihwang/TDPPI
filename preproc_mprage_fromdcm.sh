@@ -2,14 +2,14 @@
 
 #run preprocessMprage on subjects. for TRSE
 
-WD='/home/despoB/kaihwang/TRSE/TRSEPPI/REACH'
+WD='/home/despoB/kaihwang/TRSE/TRSEPPI/ENHANCE'
 
-for s in 107; do
+for s in 7616; do
 
 	cd ${WD}/${s}/MPRAGE
 
 	preprocessMprage -r MNI_2mm \
-	-b "-R -S -B -f 0.05 -g -0.3" \
+	-b "-R -S -B -f 0.3 -g -0.3" \
 	-d archive \
 	-o ${s}_MNI_final.nii.gz -p "*.dcm"
 
