@@ -9,7 +9,7 @@ for dataset in TRSETMS_6; do #
 	WD="/home/despoB/kaihwang/TRSE/TRSEPPI/${dataset}"
 	cd ${WD}
 
-	for Subject in $(ls -d *); do
+	for Subject in 640; do #$(ls -d *)
 		
 		#if [ ! -e "${WD}/${Subject}/MPRAGE/${Subject}_MNI_final.nii.gz" ]; then
 		#	sed "s/s in 107/s in ${Subject}/g; s/REACH/${dataset}/g " < ${SCRIPTS}/preproc_mprage_fromdcm.sh > ~/tmp/mprage_${Subject}.sh
@@ -18,8 +18,8 @@ for dataset in TRSETMS_6; do #
 
 		 for r in $(seq 1 1 20); do
 			
-		 	if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_run${r}_raw_6.nii.gz" ]; then #
-		 		sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g; s/REACH/${dataset}/g " < ${SCRIPTS}/preproc_functional.sh > ~/tmp/preprocFunc_${Subject}_${r}.sh 
+		 	if [ ! -e "${WD}/${Subject}/run${r}/nswdkmt_functional_6.nii.gz" ]; then #
+		 		sed "s/s in 106/s in ${Subject}/g; s/run1/run${r}/g; s/REACH/${dataset}/g " < ${SCRIPTS}/preproc_functional_fromdicom.sh > ~/tmp/preprocFunc_${Subject}_${r}.sh 
 		 		qsub -V -M kaihwang -m e -e ~/tmp -o ~/tmp ~/tmp/preprocFunc_${Subject}_${r}.sh   #-l mem_free=5G
 		 	fi
 		 done

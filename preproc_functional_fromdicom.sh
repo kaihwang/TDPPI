@@ -31,11 +31,12 @@ for s in 106; do
 	-smoothing_kernel 6 \
 	-warpcoef ${WD}/${s}/MPRAGE/mprage_warpcoef.nii.gz \
 	-delete_dicom archive \
+	-st_first \
 	-dicom "*.dcm"
 
 	# mv nswdkmt_*.nii.gz ${WD}/${s}/run1/
 	# mv motion_info ${WD}/${s}/run1/
-	# mv motion.par ${WD}/${s}/run1/motion.1D
+	mv motion.par ${WD}/${s}/run1/motion.1D
 	mv *  ${WD}/${s}/run1/
 	mv .detect_sliceorder ${WD}/${s}/run1/slice_order
 	mv .detect_tr ${WD}/${s}/run1/slice_order/TR
