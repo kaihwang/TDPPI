@@ -1,0 +1,29 @@
+# WD='/home/despoB/kaihwang/TRSE/TRSEPPI'
+
+# for dirs in ENHANCE ESTROGEN REACH RVR TRSETMS_1 TRSETMS_6; do
+
+# 	cd ${WD}/${dirs}
+
+# 	for s in $(ls -d *); do
+# 		cd  ${WD}/AllSubjs/
+# 		ln -s ${WD}/${dirs}/${s} ${s}
+
+# 	done
+# done
+
+
+WD='/home/despoB/TRSEPPI/TRSEPPI/AllSubjs'
+cd ${WD}/
+
+for s in $(ls -d *); do
+	cd  ${WD}/${s}/
+	
+	for r in $(seq 1 1 20); do
+		if [ ! -e "${WD}/${s}/run${r}/nswdkmt_functional_6.nii.gz" ]; then
+			ln -s ${WD}/${s}/run${r}/nswdkmt_run${r}_raw_6.nii.gz ${WD}/${s}/run${r}/nswdkmt_functional_6.nii.gz
+		fi
+	done	
+
+	
+
+done

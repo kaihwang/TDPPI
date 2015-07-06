@@ -1,12 +1,13 @@
 #!/bin/bash
 # script to localize FFA and PPA
 
-WD='/home/despoB/kaihwang/TRSE/'
-SCRIPTS='/home/despoB/kaihwang/TRSE/TRSE_scripts'
+WD='/home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs'
+SCRIPTS='/home/despoB/kaihwang/TRSE/TRSEPPI/TRSE_scripts'
 
 
-for s in 106; do
+for s in REPLACEME; do
 	cd ${WD}/${s}/
+	ln -s /home/despoB/kaihwang/standard/mni_icbm152_nlin_asym_09c/mni_icbm152_t1_tal_nlin_asym_09c_brain_2mm.nii template_brain.nii
 
 	# first concat different runs
 	#3dTcat -prefix ${WD}/${s}/EPI-input $(ls ${WD}/${s}/run*/nswdk* | sort -V)
