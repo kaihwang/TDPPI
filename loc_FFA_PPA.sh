@@ -23,7 +23,7 @@ for s in REPLACEME; do
 		-per_run -round_times 0.7
 
 
-		for run in $(grep -n 0 ${SCRIPTS}/${s}_${conditions}.txt | cut -f1 -d:); do
+		for run in $(grep -n [0-9] ${SCRIPTS}/${s}_${conditions}.txt | cut -f1 -d:); do
 
 			sed -n "${run} p" ${WD}/${s}/${conditions}_allruns.1D > ${WD}/${s}/tmp.1D
 			1dtranspose ${WD}/${s}/tmp.1D ${WD}/${s}/stim_${conditions}_run${run}.1D

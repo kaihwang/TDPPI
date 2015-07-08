@@ -35,7 +35,7 @@ for s in 106; do
 				-per_run -round_times 0.7		
 			fi
 			
-			for run in $(grep -n 0 ${SCRIPTS}/${s}_${conditions}.txt | cut -f1 -d:); do #extract runs with this condition.
+			for run in $(grep -n [0-9] ${SCRIPTS}/${s}_${conditions}.txt | cut -f1 -d:); do #extract runs with this condition.
 				
 				#afni style gPPI (deconvolution)
 				
