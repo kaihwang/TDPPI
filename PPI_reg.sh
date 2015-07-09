@@ -7,10 +7,10 @@
 # http://afni.nimh.nih.gov/sscc/gangc/CD-CorrAna.html
 
 
-WD='/home/despoB/kaihwang/TRSE/'
-SCRIPTS='/home/despoB/kaihwang/TRSE/TRSE_scripts'
+WD='/home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/'
+SCRIPTS='/home/despoB/kaihwang/TRSE/TRSEPPI/TRSE_scripts/'
 
-for s in 106; do
+for s in 1106; do
 
 	#normalize EPI time-series
 	cd $WD/$s/
@@ -39,7 +39,7 @@ for s in 106; do
 				
 				#afni style gPPI (deconvolution)
 				
-				if [ ! -e ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D ]; then
+				if [ ! -e ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D ]; then
 					#Step 1. Create seed time series: 3dmaskave -mask ROI -MyInput+orig > Seed.1D 
 					3dmaskave -quiet -mask ${WD}/${s}/${ROIs}_indiv_ROI+tlrc ${WD}/${s}/run$(printf %d $run)/nswdkmt_run$(printf %d $run)_raw_6.nii.gz > ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D
 					1dtranspose ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
@@ -63,7 +63,7 @@ for s in 106; do
 				fi
 				
 				#fsl style gPPI (convolution)
-				if [ ! -e ${WD}${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then  
+				if [ ! -e ${WD}/${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then  
 					
 					#Step 1. de-mean task regressor
 					if [ ! -e ${WD}/${s}/stim_${conditions}_run${run}_dm.1D ]; then
@@ -121,7 +121,7 @@ for s in 106; do
 	for run in $Included_Runs; do
 		
 		if [ ! -e ${WD}/${s}/preproced-EPI-${run}.nii.gz ]; then
-			ln -s ${WD}/${s}/run${run}/nswdkmt_run${run}_raw_6.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz
+			ln -s ${WD}/${s}/run${run}/nswdkmt_functional_6.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz
 		fi
 		
 		if [ ! -e ${WD}/${s}/run${run}-motpar.1D ]; then
@@ -137,48 +137,13 @@ for s in 106; do
 	#3dTcat -prefix ${WD}/${s}/EPI-input $(ls *nii | sort -V)
 	cat $(ls run*motpar.1D | sort -V) > ${WD}/${s}/Reg_motion.1D
 	
-	#Regression (afni style)
-	# if [ ! -e 3dREML_PPI_Full_model_stats_cmd ]; then
-	# 	# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
-	# 	3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
-	# 	-automask \
-	# 	-polort A \
-	# 	-num_stimts 12 \
-	# 	-stim_file 1 ${WD}/${s}/Reg_irrelevant.1D -stim_label 1 irrelevant \
-	# 	-stim_file 2 ${WD}/${s}/Reg_relevant.1D -stim_label 2 relevant \
-	# 	-stim_file 3 ${WD}/${s}/stim_irrelevant.1D -stim_label 3 stimtime_irrelevant \
-	# 	-stim_file 4 ${WD}/${s}/stim_relevant.1D -stim_label 4 stimtime_relevant \
-	# 	-stim_file 5 ${WD}/${s}/FFA_ts.1D -stim_label 5 FFA_TS  \
-	# 	-stim_file 6 ${WD}/${s}/PPA_ts.1D -stim_label 6 PPA_TS  \
-	# 	-stim_file 7 ${WD}/${s}/Reg_motion.1D[0] -stim_label 7 motpar1 -stim_base 7 \
-	# 	-stim_file 8 ${WD}/${s}/Reg_motion.1D[1] -stim_label 8 motpar2 -stim_base 8 \
-	# 	-stim_file 9 ${WD}/${s}/Reg_motion.1D[2] -stim_label 9 motpar3 -stim_base 9 \
-	# 	-stim_file 10 ${WD}/${s}/Reg_motion.1D[3] -stim_label 10 motpar4 -stim_base 10 \
-	# 	-stim_file 11 ${WD}/${s}/Reg_motion.1D[4] -stim_label 11 motpar5 -stim_base 11 \
-	# 	-stim_file 12 ${WD}/${s}/Reg_motion.1D[5] -stim_label 12 motpar6 -stim_base 12 \
-	# 	-gltsym 'SYM: +1*irrelevant' -glt_label 1 gPPI_irrelevant \
-	# 	-gltsym 'SYM: +1*relevant' -glt_label 2 gPPI_relevant \
-	# 	-gltsym 'SYM: +1*irrelevant -1*relevant' -glt_label 3 gPPI_irrelevant-relevant \
-	# 	-gltsym 'SYM: +1*stimtime_irrelevant' -glt_label 4 stimtime_irrelevant \
-	# 	-gltsym 'SYM: +1*stimtime_relevant' -glt_label 5 stimtime_relevant \
-	# 	-gltsym 'SYM: +1*stimtime_irrelevant -1*stimtime_relevant' -glt_label 6 stimtime_irrelevant-stimtime_relevant \
-	# 	-fout \
-	# 	-rout \
-	# 	-tout \
-	# 	-bucket PPI_Full_model_stats \
-	# 	-x1D Full_model_design_mat \
-	# 	-x1D_stop  
-		
-	# 	sed "s/-rout/-rout -automask/g" < PPI_Full_model_stats.REML_cmd> 3dREML_PPI_Full_model_stats_cmd
-	# 	. 3dREML_PPI_Full_model_stats_cmd
-	# fi
 
 	# regression FSL style
-	if [ ! -e 3dREML_FSLgPPI_Full_model_stats_cmd ]; then
+	if [ ! -e FSLgPPI_Full_model_stats.REML_cmd ]; then
 	
 		# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
 		3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
-		-automask \
+		-mask /home/despoB/kaihwang/TRSE/TRSEPPI/overlap_mask/TRSE_80perOverlap_mask.nii.gz \
 		-polort A \
 		-num_stimts 12 \
 		-stim_file 1 ${WD}/${s}/RegFSLgPPI_irrelevant.1D -stim_label 1 irrelevant \
@@ -206,45 +171,9 @@ for s in 106; do
 		-x1D FSLgFull_model_design_mat \
 		-x1D_stop  
 		
-		sed "s/-rout/-rout -automask/g" < FSLgPPI_Full_model_stats.REML_cmd> 3dREML_FSLgPPI_Full_model_stats_cmd
-		. 3dREML_FSLgPPI_Full_model_stats_cmd	
+		#sed "s/-rout/-rout -automask/g" < FSLgPPI_Full_model_stats.REML_cmd> 3dREML_FSLgPPI_Full_model_stats_cmd
+		. FSLgPPI_Full_model_stats.REML_cmd	
 	fi
 	
-	# regression with orthogonized regressors
-	# if [ ! -e 3dREML_FSLgPPI_Ortho_model_stats_cmd ]; then
-	
-	# 	# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
-	# 	3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
-	# 	-automask \
-	# 	-polort A \
-	# 	-num_stimts 12 \
-	# 	-stim_file 1 ${WD}/${s}/RegFSLgPPI_irrelevant.1D -stim_label 1 irrelevant \
-	# 	-stim_file 2 ${WD}/${s}/RegFSLgPPI_relevant.1D -stim_label 2 relevant \
-	# 	-stim_file 3 ${WD}/${s}/stim_ortho_irrelevant.1D -stim_label 3 stimtime_irrelevant \
-	# 	-stim_file 4 ${WD}/${s}/stim_ortho_relevant.1D -stim_label 4 stimtime_relevant \
-	# 	-stim_file 5 ${WD}/${s}/FFA_ts.1D -stim_label 5 FFA_TS  \
-	# 	-stim_file 6 ${WD}/${s}/PPA_ts.1D -stim_label 6 PPA_TS  \
-	# 	-stim_file 7 ${WD}/${s}/Reg_motion.1D[0] -stim_label 7 motpar1 -stim_base 7 \
-	# 	-stim_file 8 ${WD}/${s}/Reg_motion.1D[1] -stim_label 8 motpar2 -stim_base 8 \
-	# 	-stim_file 9 ${WD}/${s}/Reg_motion.1D[2] -stim_label 9 motpar3 -stim_base 9 \
-	# 	-stim_file 10 ${WD}/${s}/Reg_motion.1D[3] -stim_label 10 motpar4 -stim_base 10 \
-	# 	-stim_file 11 ${WD}/${s}/Reg_motion.1D[4] -stim_label 11 motpar5 -stim_base 11 \
-	# 	-stim_file 12 ${WD}/${s}/Reg_motion.1D[5] -stim_label 12 motpar6 -stim_base 12 \
-	# 	-gltsym 'SYM: +1*irrelevant' -glt_label 1 gPPI_irrelevant \
-	# 	-gltsym 'SYM: +1*relevant' -glt_label 2 gPPI_relevant \
-	# 	-gltsym 'SYM: +1*irrelevant -1*relevant' -glt_label 3 gPPI_irrelevant-relevant \
-	# 	-gltsym 'SYM: +1*stimtime_irrelevant' -glt_label 4 stimtime_irrelevant \
-	# 	-gltsym 'SYM: +1*stimtime_relevant' -glt_label 5 stimtime_relevant \
-	# 	-gltsym 'SYM: +1*stimtime_irrelevant -1*stimtime_relevant' -glt_label 6 stimtime_irrelevant-stimtime_relevant \
-	# 	-fout \
-	# 	-rout \
-	# 	-tout \
-	# 	-bucket FSLgPPI_Ortho_model_stats \
-	# 	-x1D FSLgOrtho_model_design_mat \
-	# 	-x1D_stop  
-		
-	# 	sed "s/-rout/-rout -automask/g" < FSLgPPI_Ortho_model_stats.REML_cmd> 3dREML_FSLgPPI_Ortho_model_stats_cmd
-	# 	. 3dREML_FSLgPPI_Ortho_model_stats_cmd	
-	# fi
 
 done
