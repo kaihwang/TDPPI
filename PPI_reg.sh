@@ -41,7 +41,7 @@ for s in 1106; do
 				
 				if [ ! -e ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D ]; then
 					#Step 1. Create seed time series: 3dmaskave -mask ROI -MyInput+orig > Seed.1D 
-					3dmaskave -quiet -mask ${WD}/${s}/${ROIs}_indiv_ROI+tlrc ${WD}/${s}/run$(printf %d $run)/nswdkmt_run$(printf %d $run)_raw_6.nii.gz > ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D
+					3dmaskave -quiet -mask ${WD}/${s}/${ROIs}_indiv_ROI+tlrc ${WD}/${s}/run$(printf %d $run)/nswdkmt_functional_6.nii.gz > ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D
 					1dtranspose ${WD}/${s}/${ROIs}_TS_run${run}_${conditions}.1D ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_t.1D
 					
 					#Step 2. Detrend seed TS: 3dDetrend -polort ? -prefix SeedR Seed.1D; 
@@ -56,7 +56,7 @@ for s in 1106; do
 					#Step 4. extract stimulus timing. create gPPI psycho-phys-regressor, create stimulus timing regressors.
 					sed -n "${run} p" ${WD}/${s}/${conditions}_allruns.1D > ${WD}/${s}/tmp.1D
 					1dtranspose ${WD}/${s}/tmp.1D ${WD}/${s}/stim_${conditions}_run${run}.1D
-					waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_gam.1D
+					waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_${conditions}_run${run}_gam.1D
 					#1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
 					#waver -GAM -peak 1 -TR 1  -input ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
 				
