@@ -66,13 +66,13 @@ for s in 1106; do
 				if [ ! -e ${WD}/${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then  
 					
 					#Step 1. de-mean task regressor
-					if [ ! -e ${WD}/${s}/stim_${conditions}_run${run}_dm.1D ]; then
-						1d_tool.py -infile ${WD}/${s}/stim_${conditions}_run${run}.1D -demean -write ${WD}/${s}/stim_${conditions}_run${run}_dm.1D
-					fi
+					#if [ ! -e ${WD}/${s}/stim_${conditions}_run${run}_dm.1D ]; then
+						#1d_tool.py -infile ${WD}/${s}/stim_${conditions}_run${run}.1D -demean -write ${WD}/${s}/stim_${conditions}_run${run}_dm.1D
+					#fi
 					
 					# step 2. convolve de-meaned regressor with HRF
 					if [ ! -e ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D ]; then
-						waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}_dm.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
+						waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
 					fi
 					
 					# step 3. create PPI interaction regressor with demeaned and detrend ROI ts
@@ -150,8 +150,8 @@ for s in 1106; do
 		-stim_file 2 ${WD}/${s}/RegFSLgPPI_relevant.1D -stim_label 2 relevant \
 		-stim_file 3 ${WD}/${s}/stim_irrelevant.1D -stim_label 3 stimtime_irrelevant \
 		-stim_file 4 ${WD}/${s}/stim_relevant.1D -stim_label 4 stimtime_relevant \
-		-stim_file 5 ${WD}/${s}/FFA_ts.1D -stim_label 5 FFA_TS  \
-		-stim_file 6 ${WD}/${s}/PPA_ts.1D -stim_label 6 PPA_TS  \
+		-stim_file 5 ${WD}/${s}/FFA_ts.1D -stim_label 5 FFA_TS -stim_base 5  \
+		-stim_file 6 ${WD}/${s}/PPA_ts.1D -stim_label 6 PPA_TS  -stim_base 6 \
 		-stim_file 7 ${WD}/${s}/Reg_motion.1D[0] -stim_label 7 motpar1 -stim_base 7 \
 		-stim_file 8 ${WD}/${s}/Reg_motion.1D[1] -stim_label 8 motpar2 -stim_base 8 \
 		-stim_file 9 ${WD}/${s}/Reg_motion.1D[2] -stim_label 9 motpar3 -stim_base 9 \
