@@ -42,8 +42,10 @@ cd ${WD}
 
 for Subject in $(ls -d *) ; do
 
-	if [ ! -e ${WD}/${Subject}/FSLgPPI_Full_model_stats_REML+tlrc.HEAD ]; then
+	if [ ! -e ${WD}/${Subject}/gPPI_Full_model_stats_REML+tlrc.HEAD ]; then
 		sed "s/s in 1106/s in ${Subject}/g" < ${SCRIPTS}/PPI_reg.sh> ~/tmp/model${Subject}.sh
-		qsub -V -M kaihwang -m e -l mem_free=9G -e ~/tmp -o ~/tmp ~/tmp/model${Subject}.sh
+		qsub -l mem_free=9G -V -M kaihwang -m e -e ~/tmp -o ~/tmp ~/tmp/model${Subject}.sh 
 	fi	
 done
+
+#-l mem_free=4G

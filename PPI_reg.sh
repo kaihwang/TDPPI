@@ -30,7 +30,7 @@ for s in 1106; do
 				-timing_to_1D ${WD}/${s}/${conditions}_allruns.1D \
 				-tr 1 \
 				-stim_dur 0.5 \
-				-min_frac 0.3 \
+				-min_frac 0.1 \
 				-run_len 114 \
 				-per_run -round_times 0.7		
 			fi
@@ -49,7 +49,9 @@ for s in 1106; do
 					1dtranspose ${WD}/${s}/${ROIs}_run${run}_TS_${conditions}_dt.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D
 					
 					#Step 3. Run decovolution on the time-series. 			
-					#3dTfitter -RHS ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/GammaHR.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 0123 0
+					3dTfitter -RHS ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -FALTUNG ${WD}/${s}/GammaHR.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 0 -1
+					# normalize
+					3dDetrend -normalize -polort 0 -prefix ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS_n.1D ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D 
 				fi	
 				
 				if [ ! -e ${WD}/${s}/stim_run${run}_${conditions}_gam.1D ]; then
@@ -57,13 +59,14 @@ for s in 1106; do
 					sed -n "${run} p" ${WD}/${s}/${conditions}_allruns.1D > ${WD}/${s}/tmp.1D
 					1dtranspose ${WD}/${s}/tmp.1D ${WD}/${s}/stim_${conditions}_run${run}.1D
 					waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_${conditions}_run${run}_gam.1D
-					#1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS.1D\' -b ${WD}/${s}/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
-					#waver -GAM -peak 1 -TR 1  -input ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
+					1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_NeuroTS_n.1D\' -b ${WD}/${s}/stim_${conditions}_run${run}.1D -expr 'a*b' > ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D
+					#interaction
+					waver -GAM -peak 1 -TR 1  -input ${WD}${s}/${ROIs}_TS_run${run}_${conditions}_NeuroXStim.1D -numout 114 > ${WD}${s}/gPPI_run${run}_${ROIs}_TS_${conditions}.1D
 				
 				fi
 				
 				#fsl style gPPI (convolution)
-				if [ ! -e ${WD}/${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then  
+				#if [ ! -e ${WD}/${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D ]; then  
 					
 					#Step 1. de-mean task regressor
 					#if [ ! -e ${WD}/${s}/stim_${conditions}_run${run}_dm.1D ]; then
@@ -71,14 +74,14 @@ for s in 1106; do
 					#fi
 					
 					# step 2. convolve de-meaned regressor with HRF
-					if [ ! -e ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D ]; then
-						waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
-					fi
+					#if [ ! -e ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D ]; then
+					#	waver -GAM -peak 1 -TR 1  -input ${WD}/${s}/stim_${conditions}_run${run}.1D -numout 114 > ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D
+					#fi
 					
 					# step 3. create PPI interaction regressor with demeaned and detrend ROI ts
-					1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -b ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D -expr 'a*b' > ${WD}${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D
+					#1deval -a ${WD}${s}/${ROIs}_run${run}_TS_${conditions}_dt_t.1D -b ${WD}/${s}/stim_run${run}_${conditions}_dmgam.1D -expr 'a*b' > ${WD}${s}/FSLgPPI_run${run}_${ROIs}_TS_${conditions}.1D
 				
-				fi
+				#fi
 			done
 		done 
 	done
@@ -94,10 +97,10 @@ for s in 1106; do
 	rm FSLgPPI*PPA*_irrelevant*face*
 	
 	#Concat regressors
-	cat $(ls ${WD}/${s}/FSLgPPI*_irrelevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_irrelevant.1D
-	cat $(ls ${WD}/${s}/FSLgPPI*_relevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_relevant.1D
-	#cat $(ls ${WD}/${s}/gPPI*_irrelevant* | sort -V) > ${WD}/${s}/Reg_irrelevant.1D
-	#cat $(ls ${WD}/${s}/gPPI*_relevant* | sort -V) > ${WD}/${s}/Reg_relevant.1D
+	#cat $(ls ${WD}/${s}/FSLgPPI*_irrelevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_irrelevant.1D
+	#cat $(ls ${WD}/${s}/FSLgPPI*_relevant* | sort -V) > ${WD}/${s}/RegFSLgPPI_relevant.1D
+	cat $(ls ${WD}/${s}/gPPI*_irrelevant* | sort -V) > ${WD}/${s}/RegPPI_irrelevant.1D
+	cat $(ls ${WD}/${s}/gPPI*_relevant* | sort -V) > ${WD}/${s}/RegPPI_relevant.1D
 	cat $(ls ${WD}/${s}/*_relevant_*_gam.1D | sort -k4 -t_ -V) > ${WD}/${s}/stim_relevant.1D
 	cat $(ls ${WD}/${s}/*irrelevant_*_gam.1D | sort -k4 -t_ -V) > ${WD}/${s}/stim_irrelevant.1D
 	cat $(ls ${WD}/${s}/FFA_run*TS*irrelevant*dt*t.1D | sort -V) > ${WD}/${s}/FFA_ts.1D
@@ -117,7 +120,7 @@ for s in 1106; do
 
 	#cat $(ls ${WD}/${s}/stim_run${run}_irrelevant_gam.1D)
 	# to get the runs
-	Included_Runs=$(ls FSLgPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}')
+	Included_Runs=$(ls gPPI*_irrelevant* | sort -V | grep -Eo 'run[0-9]{1,2}' | grep -Eo '[0-9]{1,2}')
 	for run in $Included_Runs; do
 		
 		if [ ! -e ${WD}/${s}/preproced-EPI-${run}.nii.gz ]; then
@@ -127,6 +130,11 @@ for s in 1106; do
 		if [ ! -e ${WD}/${s}/run${run}-motpar.1D ]; then
 			ln -s ${WD}/${s}/run${run}/motion.1D ${WD}/${s}/run${run}-motpar.1D
 		fi
+
+		#get CSF nusiance regressors
+		for mask in 1 2 3 4 5 6; do
+			3dmaskave -quiet -mask /home/despoB/kaihwang/TRSE/TRSEPPI/Group/CSF_mask${mask}.nii.gz ${WD}/${s}/preproced-EPI-${run}.nii.gz > csf${mask}_run${run}.1D
+		done
 	
 	done
 	
@@ -136,18 +144,20 @@ for s in 1106; do
 	#create concatenate NII file and motion regressors
 	#3dTcat -prefix ${WD}/${s}/EPI-input $(ls *nii | sort -V)
 	cat $(ls run*motpar.1D | sort -V) > ${WD}/${s}/Reg_motion.1D
-	
+	for mask in 1 2 3 4 5 6; do
+		cat $(ls csf${mask}_run*.1D | sort -V) > ${WD}/${s}/csf${mask}_ts.1D
+	done
 
 	# regression FSL style
-	if [ ! -e FSLgPPI_Full_model_stats.REML_cmd ]; then
+	if [ ! -e gPPI_Full_model_stats.REML_cmd ]; then
 	
 		# full PPI model,  PPI regressors + stim timing + FFA/PPA timeseries
 		3dDeconvolve -input $(ls preproced-EPI-*nii.gz | sort -V) \
 		-mask /home/despoB/kaihwang/TRSE/TRSEPPI/overlap_mask/TRSE_80perOverlap_mask.nii.gz \
 		-polort A \
-		-num_stimts 12 \
-		-stim_file 1 ${WD}/${s}/RegFSLgPPI_irrelevant.1D -stim_label 1 irrelevant \
-		-stim_file 2 ${WD}/${s}/RegFSLgPPI_relevant.1D -stim_label 2 relevant \
+		-num_stimts 18 \
+		-stim_file 1 ${WD}/${s}/RegPPI_irrelevant.1D -stim_label 1 irrelevant \
+		-stim_file 2 ${WD}/${s}/RegPPI_relevant.1D -stim_label 2 relevant \
 		-stim_file 3 ${WD}/${s}/stim_irrelevant.1D -stim_label 3 stimtime_irrelevant \
 		-stim_file 4 ${WD}/${s}/stim_relevant.1D -stim_label 4 stimtime_relevant \
 		-stim_file 5 ${WD}/${s}/FFA_ts.1D -stim_label 5 FFA_TS -stim_base 5  \
@@ -158,6 +168,12 @@ for s in 1106; do
 		-stim_file 10 ${WD}/${s}/Reg_motion.1D[3] -stim_label 10 motpar4 -stim_base 10 \
 		-stim_file 11 ${WD}/${s}/Reg_motion.1D[4] -stim_label 11 motpar5 -stim_base 11 \
 		-stim_file 12 ${WD}/${s}/Reg_motion.1D[5] -stim_label 12 motpar6 -stim_base 12 \
+		-stim_file 13 ${WD}/${s}/csf1_ts.1D -stim_label 13 CSF1_TS -stim_base 13  \
+		-stim_file 14 ${WD}/${s}/csf2_ts.1D -stim_label 14 CSF2_TS -stim_base 14  \
+		-stim_file 15 ${WD}/${s}/csf3_ts.1D -stim_label 15 CSF3_TS -stim_base 15  \
+		-stim_file 16 ${WD}/${s}/csf4_ts.1D -stim_label 16 CSF4_TS -stim_base 16  \
+		-stim_file 17 ${WD}/${s}/csf5_ts.1D -stim_label 17 CSF5_TS -stim_base 17  \
+		-stim_file 18 ${WD}/${s}/csf6_ts.1D -stim_label 18 CSF6_TS -stim_base 18  \
 		-gltsym 'SYM: +1*irrelevant' -glt_label 1 gPPI_irrelevant \
 		-gltsym 'SYM: +1*relevant' -glt_label 2 gPPI_relevant \
 		-gltsym 'SYM: +1*irrelevant -1*relevant' -glt_label 3 gPPI_irrelevant-relevant \
@@ -167,12 +183,16 @@ for s in 1106; do
 		-fout \
 		-rout \
 		-tout \
-		-bucket FSLgPPI_Full_model_stats \
-		-x1D FSLgFull_model_design_mat \
+		-bucket gPPI_Full_model_stats \
+		-x1D gPPI_Full_model_design_mat \
 		-x1D_stop  
 		
 		#sed "s/-rout/-rout -automask/g" < FSLgPPI_Full_model_stats.REML_cmd> 3dREML_FSLgPPI_Full_model_stats_cmd
-		. FSLgPPI_Full_model_stats.REML_cmd	
+		. gPPI_Full_model_stats.REML_cmd	
+
+		mv 1Ds FSLgPPI_1Ds
+		mkdir AFNIgPPI_1Ds
+		mv *.1D AFNIgPPI_1Ds
 	fi
 	
 
