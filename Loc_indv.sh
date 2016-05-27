@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-WD='/home/despoB/kaihwang/TRSE/TRSEPPI/TRSETMS_1'
+WD='/home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs'
 cd $WD
 
 for s in $(/bin/ls -d *); do
