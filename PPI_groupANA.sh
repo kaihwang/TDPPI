@@ -12,7 +12,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[18] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[19] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[18] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[19] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/gPPI_irrelevant.sh
 done
 
@@ -30,7 +30,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[22] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[23] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[22] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[23] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/gPPI_relevant.sh
 done
 
@@ -47,7 +47,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[26] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[27] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[26] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[27] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/gPPI_irrelevant-relevant.sh
 done
 
@@ -64,7 +64,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[34] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[35] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[34] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[35] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/stim_relevant.sh
 done
 
@@ -81,7 +81,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[30] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[31] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[30] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[31] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/stim_irrelevant.sh
 done
 
@@ -98,7 +98,7 @@ echo 'cd /home/despoB/kaihwang/TRSE/TRSEPPI/Group
 
 cd ${WD}
 for s in $(ls -d *); do
-	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[38] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/FSLgPPI_Full_model_stats_REML+tlrc[39] \\" \
+	echo "$s /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[38] /home/despoB/kaihwang/TRSE/TRSEPPI/AllSubjs/$s/gPPI_Full_model_stats_REML+tlrc[39] \\" \
 	>> /home/despoB/kaihwang/TRSE/TRSEPPI/Group/stim_irrelevant-relevant.sh
 done
 
